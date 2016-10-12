@@ -6,7 +6,11 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 import static ltu.CalendarFactory.getCalendar;
+
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class PaymentTest {
 
@@ -19,13 +23,35 @@ public class PaymentTest {
     private final int ZERO_SUBSIDY      = 0;
     private final int FULLTIME_INCOME   = 85813;
     private final int PARTTIME_INCOME   = 128722;
-    private final int ZERO              =0;
+    private final int ZERO              = 0;
 
     private static PaymentImpl p = null;
-
+    
     @BeforeClass
     public static void init() throws IOException {
         p = new PaymentImpl(getCalendar("ltu.CalenderSpring"));
+        
+        
+    }
+    private static Calendar getSpringCal(){
+    	
+    	Calendar cal = Calendar.getInstance();
+        cal.setTime(getCalendar("ltu.CalenderSpring").getDate());
+        return cal;
+    }
+    
+    private static String getSSN(int years, int months, int days, int extra4N){
+    	DateFormat format = new SimpleDateFormat("yyyyMMdd");
+    	
+    	Calendar mCalender = getSpringCal();
+    	
+    	mCalender.add(Calendar.YEAR, -years);
+    	mCalender.add(Calendar.MONTH, -months);
+    	mCalender.add(Calendar.DATE, -days);
+    	
+    	String birthDate = format.format(mCalender.getTime());
+    	
+    	return birthDate + "-" + String.valueOf(extra4N);
     }
 
 
@@ -56,7 +82,7 @@ public class PaymentTest {
         int loan = p.getMonthlyAmount("19580815-5441", 0, 100, 100);
         assertTrue(loan == 0);
     }
-
+    
     /**
     The student must be studying at least half time to receive any subsidiary.
     */
@@ -99,6 +125,7 @@ public class PaymentTest {
         loan = p.getMonthlyAmount("19640815-5441", 128780, 80, 100);
         assertTrue(loan == 0);
     }
+    
 
     /*
     [ID: 301] A student who is studying full time or more is permitted to earn a maximum of 85 813SEK per year in order to receive any subsidiary or student loans.
