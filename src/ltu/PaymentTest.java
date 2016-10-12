@@ -207,7 +207,7 @@ public class PaymentTest {
     @Test
     public void studies100() throws IOException {
         int loan = p.getMonthlyAmount("19890815-5441", 0, 100, 100);
-        assertTrue(loan = FULL_LOAN + FULL_SUBSIDY);
+        assertTrue(loan == FULL_LOAN + FULL_SUBSIDY);
     }
     
 
@@ -219,9 +219,9 @@ public class PaymentTest {
     [ID: 504] Subsidiary: 1396 SEK / month
     **/
     @Test
-    public void studies100() throws IOException {
-        int loan = p.getMonthlyAmount("19890815-5441", 0, 100, 70);
-        assertTrue(loan = HALF_LOAN + HALF_SUBSIDY);
+    public void studiesless100() throws IOException {
+        int loan = p.getMonthlyAmount("19890815-5441", 0, 70, 100);
+        assertTrue(loan == HALF_LOAN + HALF_SUBSIDY);
     }
 
     /**
