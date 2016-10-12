@@ -197,6 +197,37 @@ public class PaymentTest {
         assertEquals(paymentDate, "20160129");
   
     }
+
+    /**
+    [ID: 501] Student loan: 7088 SEK / month
+    **/
+    /**
+    [ID: 502] Subsidiary: 2816 SEK / month
+    **/
+    @Test
+    public void studies100() throws IOException {
+        int loan = p.getMonthlyAmount("19890815-5441", 0, 100, 100);
+        assertTrue(loan = FULL_LOAN + FULL_SUBSIDY);
+    }
+    
+
+    /**
+    [ID: 503] Student loan: 3564 SEK / month
+    **/
+
+    /**
+    [ID: 504] Subsidiary: 1396 SEK / month
+    **/
+    @Test
+    public void studies100() throws IOException {
+        int loan = p.getMonthlyAmount("19890815-5441", 0, 100, 70);
+        assertTrue(loan = HALF_LOAN + HALF_SUBSIDY);
+    }
+
+    /**
+    [ID: 505] A person who is entitled to receive a student loan will always receive the full amount.
+    **/
+
     /**
         Checks security number
     **/
