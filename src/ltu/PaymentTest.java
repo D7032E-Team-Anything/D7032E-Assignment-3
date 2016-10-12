@@ -129,6 +129,17 @@ public class PaymentTest {
         assertTrue(loan == 0);
     }
 
+    /**
+        [ID: 506] Student loans and subsidiary is paid on the last weekday (Monday to Friday) every month.
+    **/
+    @Test
+    public void nextPaymentTest() {
+        int amount = p.getMonthlyAmount("19900615-5441", 0, 100, 100);
+        String paymentDate = p.getNextPaymentDay();
+  
+        assertEquals(paymentDate, "20160129");
+  
+    }
 
 
 
