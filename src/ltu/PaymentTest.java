@@ -25,17 +25,17 @@ public class PaymentTest {
 
     @BeforeClass
     public static void init() throws IOException {
-        p = new PaymentImpl(getCalendar("CalenderSpring"));
+        p = new PaymentImpl(getCalendar("ltu.CalenderSpring"));
     }
 
 
     /**
-    Person under 20 should not get a lone
+    No loan for student under 20
     **/
     @Test
     public void ageTest() throws IOException {
-        int loan = p.getMonthlyAmount("19700615-5441", 0, 100, 100);
-        assertTrue(loan == FULL_SUBSIDY+7088);
+        int loan = p.getMonthlyAmount("19990815-5441", 0, 100, 100);
+        assertTrue(loan == 0);
     }
 
 
@@ -44,7 +44,7 @@ public class PaymentTest {
     **/
     @Test
     public void ageOnlySubsidiary() throws IOException {
-        int loan = p.getMonthlyAmount("19650615-5441", 0, 100, 100);
+        int loan = p.getMonthlyAmount("19640815-5441", 0, 100, 100);
         assertTrue(loan == FULL_SUBSIDY);
     }
 
@@ -53,7 +53,7 @@ public class PaymentTest {
     **/
     @Test
     public void ageNoLoan() throws IOException {
-        int loan = p.getMonthlyAmount("19590615-5441", 0, 100, 100);
+        int loan = p.getMonthlyAmount("19580815-5441", 0, 100, 100);
         assertTrue(loan == 0);
     }
 
@@ -62,7 +62,7 @@ public class PaymentTest {
     */
     @Test
     public void studyPaceHalfReciveSubsidiary() throws IOException {
-        int loan = p.getMonthlyAmount("19800615-5441", 0, 49, 100);
+        int loan = p.getMonthlyAmount("19790815-5441", 0, 49, 100);
         assertTrue(loan == ZERO);
     }
     /**
@@ -71,9 +71,9 @@ public class PaymentTest {
     @Test
     public void paymentDate() throws IOException {
 
-        int loan = p.getMonthlyAmount("19800615-5441", 0, 49, 100);
-        p.getNextPaymentDay().;
-        assertTrue(loan == ZERO);
+        int loan = p.getMonthlyAmount("19790815-5441", 0, 49, 100);
+        //p.getNextPaymentDay().;
+       // assertTrue(loan == ZERO);
     }
 
     /**
@@ -87,16 +87,16 @@ public class PaymentTest {
     @Test
     public void subsidyTest() throws IOException {
 
-        int loan = p.getMonthlyAmount("19650615-5441", 0, 100, 100);
+        int loan = p.getMonthlyAmount("19640815-5441", 0, 100, 100);
         assertTrue(loan == 2816);
 
-        loan = p.getMonthlyAmount("19650615-5441", 0, 70, 100);
+        loan = p.getMonthlyAmount("19640815-5441", 0, 70, 100);
         assertTrue(loan == 1396);
 
-        loan = p.getMonthlyAmount("19650615-5441", 128780, 100, 100);
+        loan = p.getMonthlyAmount("19640815-5441", 128780, 100, 100);
         assertTrue(loan == 0);
 
-        loan = p.getMonthlyAmount("19650615-5441", 128780, 80, 100);
+        loan = p.getMonthlyAmount("19640815-5441", 128780, 80, 100);
         assertTrue(loan == 0);
     }
 
@@ -105,7 +105,7 @@ public class PaymentTest {
     */
     @Test
     public void fulltimeIncomeTest() throws IOException {
-        int loan = p.getMonthlyAmount("19900615-5441", FULLTIME_INCOME+1, 100, 100);
+        int loan = p.getMonthlyAmount("19890815-5441", FULLTIME_INCOME+1, 100, 100);
         assertTrue(loan == 0);
 
     }
@@ -115,7 +115,7 @@ public class PaymentTest {
     */
     @Test
     public void parttimeIncomeTest() throws IOException {
-        int loan = p.getMonthlyAmount("19900615-5441", PARTTIME_INCOME+1, 50, 100);
+        int loan = p.getMonthlyAmount("19890815-5441", PARTTIME_INCOME+1, 50, 100);
         assertTrue(loan == 0);
 
     }
@@ -125,7 +125,7 @@ public class PaymentTest {
     */
     @Test
     public void studiesCompletionTest() throws IOException {
-        int loan = p.getMonthlyAmount("19900615-5441", 0, 100, 49);
+        int loan = p.getMonthlyAmount("19890815-5441", 0, 100, 49);
         assertTrue(loan == 0);
     }
 

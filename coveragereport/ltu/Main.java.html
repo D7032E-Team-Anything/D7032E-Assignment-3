@@ -15,47 +15,52 @@ import java.io.InputStreamReader;
     public static void main(String[] args) throws IOException
     {
 
-
-<span class="nc bnc" id="L19" title="All 4 branches missed.">       if (args.length &lt; 1 || args.length &gt; 2)</span>
+/*
+       if (args.length &lt; 1 || args.length &gt; 2)
         {
-<span class="nc" id="L21">            System.out.println(&quot;Usage ltu.Main &lt;inputfile&gt; [optional: calendarClass]&quot;);</span>
-<span class="nc" id="L22">            System.exit(-1);</span>
+            System.out.println(&quot;Usage ltu.Main &lt;inputfile&gt; [optional: calendarClass]&quot;);
+            System.exit(-1);
         }
 
 
         PaymentImpl payment;
-<span class="nc bnc" id="L27" title="All 2 branches missed.">        if(args.length &gt; 1) {</span>
-<span class="nc" id="L28">                payment = new PaymentImpl(getCalendar(args[1]));</span>
+        if(args.length &gt; 1) {
+                payment = new PaymentImpl(getCalendar(args[1]));
         } else {
-<span class="nc" id="L30">                payment = new PaymentImpl(getCalendar());</span>
+                payment = new PaymentImpl(getCalendar());
         }
+*/		
+    	///////////
+    	PaymentImpl payment;
+<span class="nc" id="L35">    	payment = new PaymentImpl(getCalendar(&quot;ltu.CalenderSpring&quot;));</span>
+    	
+    	
+<span class="nc" id="L38">        FileInputStream fis = new FileInputStream(&quot;/home/haidar/workspace/Ass3Junit/inputfiles/debug.csv&quot;);</span>
+<span class="nc" id="L39">        BufferedReader reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(fis)));</span>
+<span class="nc" id="L40">        String line = null;</span>
 
-<span class="nc" id="L33">        FileInputStream fis = new FileInputStream(args[0]);</span>
-<span class="nc" id="L34">        BufferedReader reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(fis)));</span>
-<span class="nc" id="L35">        String line = null;</span>
-
-<span class="nc bnc" id="L37" title="All 2 branches missed.">        while ((line = reader.readLine()) != null)</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        while ((line = reader.readLine()) != null)</span>
         {
-<span class="nc bnc" id="L39" title="All 2 branches missed.">            if (line.startsWith(&quot;#&quot;))</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            if (line.startsWith(&quot;#&quot;))</span>
             {
-<span class="nc" id="L41">                continue;</span>
+<span class="nc" id="L46">                continue;</span>
             }
-<span class="nc" id="L43">            String[] fields = line.split(&quot;;&quot;);</span>
-<span class="nc bnc" id="L44" title="All 2 branches missed.">            if (fields.length != 4)</span>
+<span class="nc" id="L48">            String[] fields = line.split(&quot;;&quot;);</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">            if (fields.length != 4)</span>
             {
-<span class="nc" id="L46">                System.out.println(&quot;Corrupt input file&quot;);</span>
-<span class="nc" id="L47">                System.exit(-1);</span>
+<span class="nc" id="L51">                System.out.println(&quot;Corrupt input file&quot;);</span>
+<span class="nc" id="L52">                System.exit(-1);</span>
             }
-<span class="nc" id="L49">            String personId = fields[0];</span>
-<span class="nc" id="L50">            int income = parseInt(fields[1]);</span>
-<span class="nc" id="L51">            int studyRate = parseInt(fields[2]);</span>
-<span class="nc" id="L52">            int completionRatio = parseInt(fields[3]);</span>
-<span class="nc" id="L53">            int amount = payment.getMonthlyAmount(personId, income, studyRate, completionRatio);</span>
-<span class="nc" id="L54">            String paymentDate = payment.getNextPaymentDay();</span>
-<span class="nc" id="L55">            System.out.println(line + &quot; =&gt; &quot; + paymentDate + &quot;: &quot; + personId + &quot;: &quot; + amount);</span>
-<span class="nc" id="L56">        }</span>
-<span class="nc" id="L57">        reader.close();</span>
-<span class="nc" id="L58">    }</span>
+<span class="nc" id="L54">            String personId = fields[0];</span>
+<span class="nc" id="L55">            int income = parseInt(fields[1]);</span>
+<span class="nc" id="L56">            int studyRate = parseInt(fields[2]);</span>
+<span class="nc" id="L57">            int completionRatio = parseInt(fields[3]);</span>
+<span class="nc" id="L58">            int amount = payment.getMonthlyAmount(personId, income, studyRate, completionRatio);</span>
+<span class="nc" id="L59">            String paymentDate = payment.getNextPaymentDay();</span>
+<span class="nc" id="L60">            System.out.println(line + &quot; =&gt; &quot; + paymentDate + &quot;: &quot; + personId + &quot;: &quot; + amount);</span>
+<span class="nc" id="L61">        }</span>
+<span class="nc" id="L62">        reader.close();</span>
+<span class="nc" id="L63">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

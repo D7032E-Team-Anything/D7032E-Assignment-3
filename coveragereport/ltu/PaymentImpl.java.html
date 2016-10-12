@@ -99,7 +99,7 @@ public class PaymentImpl implements IPayment
 
     private int getLoan(int age, int income, int studyRate, int completionRatio)
     {
-<span class="pc bpc" id="L102" title="1 of 8 branches missed.">        if (studyRate &lt; 50 || age &lt; 20 || age &gt;= 47 || completionRatio &lt; 50)</span>
+<span class="fc bfc" id="L102" title="All 8 branches covered.">        if (studyRate &lt; 50 || age &lt; 20 || age &gt;= 47 || completionRatio &lt; 50)</span>
         {
 <span class="fc" id="L104">            return ZERO_LOAN;</span>
         }
@@ -120,7 +120,7 @@ public class PaymentImpl implements IPayment
 
     private int getSubsidy(int age, int income, int studyRate, int completionRatio)
     {
-<span class="pc bpc" id="L123" title="1 of 8 branches missed.">        if (studyRate &lt; 50 || age &lt; 20 || age &gt; 56 || completionRatio &lt; 50)</span>
+<span class="fc bfc" id="L123" title="All 8 branches covered.">        if (studyRate &lt; 50 || age &lt; 20 || age &gt; 56 || completionRatio &lt; 50)</span>
         {
 <span class="fc" id="L125">            return ZERO_SUBSIDY;</span>
         }
