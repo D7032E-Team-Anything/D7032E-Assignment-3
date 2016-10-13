@@ -6,131 +6,192 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 
 import static ltu.CalendarFactory.getCalendar;
+
 import java.io.*;
 
-<span class="fc" id="L11">public class PaymentTest {</span>
-
-
-<span class="fc" id="L14">    private final int FULL_LOAN         = 7088;</span>
-<span class="fc" id="L15">    private final int HALF_LOAN         = 3564;</span>
-<span class="fc" id="L16">    private final int ZERO_LOAN         = 0;</span>
-<span class="fc" id="L17">    private final int FULL_SUBSIDY      = 2816;</span>
-<span class="fc" id="L18">    private final int HALF_SUBSIDY      = 1396;</span>
-<span class="fc" id="L19">    private final int ZERO_SUBSIDY      = 0;</span>
-<span class="fc" id="L20">    private final int FULLTIME_INCOME   = 85813;</span>
-<span class="fc" id="L21">    private final int PARTTIME_INCOME   = 128722;</span>
-<span class="fc" id="L22">    private final int ZERO              =0;</span>
-
-<span class="fc" id="L24">    private static PaymentImpl p = null;</span>
-
+<span class="fc" id="L12">public class PaymentTest {</span>
+	
+<span class="fc" id="L14">private static PaymentImpl p = null;    </span>
+    
     @BeforeClass
     public static void init() throws IOException {
-<span class="fc" id="L28">        p = new PaymentImpl(getCalendar(&quot;ltu.CalenderSpring&quot;));</span>
-<span class="fc" id="L29">    }</span>
-
-
-    /**
-    No loan for student under 20
-    **/
+<span class="fc" id="L18">        p = new PaymentImpl(getCalendar(&quot;ltu.CalenderSpring&quot;)); </span>
+<span class="fc" id="L19">    }</span>
+    
+    
+    ////////////////////////////// AGE /////////////////////////////
+    // Age 19 gets nothing
     @Test
-    public void ageTest() throws IOException {
-<span class="fc" id="L37">        int loan = p.getMonthlyAmount(&quot;19990815-5441&quot;, 0, 100, 100);</span>
-<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        assertTrue(loan == 0);</span>
-<span class="fc" id="L39">    }</span>
-
-
-    /**
-     47 to 56 only subsidiary loan
-    **/
+    public void test1()  
+    {
+<span class="fc" id="L27">    	int loan = -1;</span>
+    	try{
+<span class="fc" id="L29">            loan = p.getMonthlyAmount(TestHelper.getSSN(19,0,0,5555), 0, 100, 100);</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">            assertTrue(loan == Consts.ZERO);</span>
+<span class="pc" id="L31">    	}catch(AssertionError err){</span>
+<span class="nc" id="L32">    		System.out.println(&quot;Test 1, correct : 0, got : &quot;+ loan);</span>
+    	}
+<span class="fc" id="L34">    }</span>
+    // Age 20 gets loan + subs
     @Test
-    public void ageOnlySubsidiary() throws IOException {
-<span class="fc" id="L47">        int loan = p.getMonthlyAmount(&quot;19640815-5441&quot;, 0, 100, 100);</span>
-<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        assertTrue(loan == FULL_SUBSIDY);</span>
-<span class="fc" id="L49">    }</span>
+    public void test2() 
+    {
+<span class="fc" id="L39">    	int loan = -1;</span>
+    	try{
+<span class="fc" id="L41">            loan = p.getMonthlyAmount(TestHelper.getSSN(20,0,0,5555), 0 , 100, 100);</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">            assertTrue(loan == Consts.FULL_LOAN + Consts.FULL_SUBSIDY);</span>
+    		
+<span class="pc" id="L44">    	}catch(AssertionError err){</span>
+<span class="fc" id="L45">    		System.out.println(&quot;Test 2, correct : 9904, got : &quot;+ loan);</span>
+    	}
 
-    /**
-     Above 56 no loans
-    **/
+<span class="fc" id="L48">    }</span>
+    // Age 46 gets loan + subs
     @Test
-    public void ageNoLoan() throws IOException {
-<span class="fc" id="L56">        int loan = p.getMonthlyAmount(&quot;19580815-5441&quot;, 0, 100, 100);</span>
-<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        assertTrue(loan == 0);</span>
-<span class="fc" id="L58">    }</span>
-
-    /**
-    The student must be studying at least half time to receive any subsidiary.
-    */
+    public void test3()
+    {
+<span class="fc" id="L53">    	int loan = -1;</span>
+    	try{
+<span class="fc" id="L55">    		loan = p.getMonthlyAmount(TestHelper.getSSN(46,0,0,5555), 0 , 100, 100);</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">            assertTrue(loan == Consts.FULL_LOAN + Consts.FULL_SUBSIDY);</span>
+    		
+<span class="pc" id="L58">    	}catch(AssertionError err){</span>
+<span class="nc" id="L59">    		System.out.println(&quot;Test 3, correct : 9904, got : &quot;+ loan);</span>
+    	}
+        
+<span class="fc" id="L62">    }</span>
+    // Age 47 gets subs only
     @Test
-    public void studyPaceHalfReciveSubsidiary() throws IOException {
-<span class="fc" id="L65">        int loan = p.getMonthlyAmount(&quot;19790815-5441&quot;, 0, 49, 100);</span>
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        assertTrue(loan == ZERO);</span>
-<span class="fc" id="L67">    }</span>
-    /**
-    * Payment date
-    */
+    public void test4() 
+    {
+<span class="fc" id="L67">    	int loan = -1;</span>
+    	try{
+<span class="fc" id="L69">    		loan = p.getMonthlyAmount(TestHelper.getSSN(47,0,0,5555), 0 , 100, 100);</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">            assertTrue(loan == Consts.FULL_SUBSIDY);    		</span>
+<span class="pc" id="L71">    	}catch(AssertionError err){</span>
+<span class="fc" id="L72">    		System.out.println(&quot;Test 4, correct : 2816, got : &quot;+ loan);</span>
+    	}
+<span class="fc" id="L74">            }</span>
+    // Age 56 gets subs only
     @Test
-    public void paymentDate() throws IOException {
-
-<span class="fc" id="L74">        int loan = p.getMonthlyAmount(&quot;19790815-5441&quot;, 0, 49, 100);</span>
-        //p.getNextPaymentDay().;
-       // assertTrue(loan == ZERO);
-<span class="fc" id="L77">    }</span>
-
-    /**
-        Checks security number
-    **/
-    @Test(expected=IllegalArgumentException.class)
-    public void noSecurityNumberTest() throws IOException {
-<span class="nc" id="L84">      int loan = p.getMonthlyAmount(null, -1, -1, -1);</span>
-<span class="nc" id="L85">    }</span>
-
+    public void test5() 
+    {
+<span class="fc" id="L79">    	int loan = -1;</span>
+    	try{
+<span class="fc" id="L81">    		loan = p.getMonthlyAmount(TestHelper.getSSN(56,0,0,5555), 0 , 100, 100);</span>
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">            assertTrue(loan == Consts.FULL_SUBSIDY);</span>
+<span class="pc" id="L83">    	}catch(AssertionError err){</span>
+<span class="nc" id="L84">    		System.out.println(&quot;Test 5, correct : 2816, got : &quot;+ loan);</span>
+    	}
+<span class="fc" id="L86">    }</span>
+    // Age 57 gets nothing
     @Test
-    public void subsidyTest() throws IOException {
-
-<span class="fc" id="L90">        int loan = p.getMonthlyAmount(&quot;19640815-5441&quot;, 0, 100, 100);</span>
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        assertTrue(loan == 2816);</span>
-
-<span class="fc" id="L93">        loan = p.getMonthlyAmount(&quot;19640815-5441&quot;, 0, 70, 100);</span>
-<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        assertTrue(loan == 1396);</span>
-
-<span class="fc" id="L96">        loan = p.getMonthlyAmount(&quot;19640815-5441&quot;, 128780, 100, 100);</span>
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        assertTrue(loan == 0);</span>
-
-<span class="fc" id="L99">        loan = p.getMonthlyAmount(&quot;19640815-5441&quot;, 128780, 80, 100);</span>
-<span class="pc bpc" id="L100" title="1 of 2 branches missed.">        assertTrue(loan == 0);</span>
-<span class="fc" id="L101">    }</span>
-
-    /*
-    [ID: 301] A student who is studying full time or more is permitted to earn a maximum of 85 813SEK per year in order to receive any subsidiary or student loans.
-    */
+    public void test6() 
+    {
+<span class="fc" id="L91">    	int loan = -1;</span>
+    	try{
+<span class="fc" id="L93">    		loan = p.getMonthlyAmount(TestHelper.getSSN(57,0,0,5555), 0 , 100, 100);</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">            assertTrue(loan == Consts.ZERO);</span>
+<span class="pc" id="L95">    	}catch(AssertionError err){</span>
+<span class="fc" id="L96">    		System.out.println(&quot;Test 6, correct : 0, got : &quot;+ loan);</span>
+    	}
+        
+<span class="fc" id="L99">    }</span>
+    
+    
+    //////////////////////////////// INCOME ///////////////////////////////////
+    // Full time max income + 1 and study rate 101 gets nothing
     @Test
-    public void fulltimeIncomeTest() throws IOException {
-<span class="fc" id="L108">        int loan = p.getMonthlyAmount(&quot;19890815-5441&quot;, FULLTIME_INCOME+1, 100, 100);</span>
-<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        assertTrue(loan == 0);</span>
-
-<span class="fc" id="L111">    }</span>
-
-    /*
-    [ID: 302] A student who is studying less than full time is allowed to earn a maximum of 128 722SEK per year in order to receive any subsidiary or student loans.
-    */
+    public void test7() 
+    {
+<span class="fc" id="L107">    	int loan = -1;</span>
+    	try{
+<span class="fc" id="L109">    		loan = p.getMonthlyAmount(TestHelper.getSSN(20,0,0,5555),Consts.FULLTIME_MAX_INCOME +1 , 101, 100);</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">    	    assertTrue(loan == Consts.ZERO);</span>
+<span class="pc" id="L111">    	}catch(AssertionError err){</span>
+<span class="nc" id="L112">    		System.out.println(&quot;Test 7, correct : 0, got : &quot;+ loan);</span>
+    	}
+       
+<span class="fc" id="L115">    }</span>
+    // Full time max income +1 and study rate 100 gets nothing
     @Test
-    public void parttimeIncomeTest() throws IOException {
-<span class="fc" id="L118">        int loan = p.getMonthlyAmount(&quot;19890815-5441&quot;, PARTTIME_INCOME+1, 50, 100);</span>
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        assertTrue(loan == 0);</span>
-
-<span class="fc" id="L121">    }</span>
-
-    /*
-    [ID: 401] A student must have completed at least 50% of previous studies in order to receive any subsidiary or student loans.
-    */
+    public void test8() 
+    {
+<span class="fc" id="L120">    	int loan = -1;</span>
+    	try{
+<span class="fc" id="L122">    		loan = p.getMonthlyAmount(TestHelper.getSSN(20,0,0,5555), Consts.FULLTIME_MAX_INCOME +1 , 100, 100);</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">            assertTrue(loan == Consts.ZERO);</span>
+<span class="pc" id="L124">    	}catch(AssertionError err){</span>
+<span class="nc" id="L125">    		System.out.println(&quot;Test 8, correct : 0, got : &quot;+ loan);</span>
+    	}
+        
+<span class="fc" id="L128">    }</span>
+    // Full time max income and study rate 100 gets loan + subs
     @Test
-    public void studiesCompletionTest() throws IOException {
-<span class="fc" id="L128">        int loan = p.getMonthlyAmount(&quot;19890815-5441&quot;, 0, 100, 49);</span>
-<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        assertTrue(loan == 0);</span>
-<span class="fc" id="L130">    }</span>
-
-
-
-
+    public void test9() 
+    {
+<span class="fc" id="L133">    	int loan = -1;</span>
+    	try{
+<span class="fc" id="L135">    		loan = p.getMonthlyAmount(TestHelper.getSSN(20,0,0,5555), Consts.FULLTIME_MAX_INCOME , 100, 100);</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">            assertTrue(loan == Consts.FULL_LOAN + Consts.FULL_SUBSIDY);</span>
+<span class="pc" id="L137">    	}catch(AssertionError err){</span>
+<span class="fc" id="L138">            System.out.println(&quot;Test 9, correct : 9904, got : &quot;+ loan);</span>
+    	}
+        
+<span class="fc" id="L141">    }</span>
+    // Part time max income + 1 and study rate 100 gets nothing
+    @Test
+    public void test10() 
+    {
+<span class="fc" id="L146">    	int loan = -1;</span>
+    	try{
+<span class="fc" id="L148">    		loan = p.getMonthlyAmount(TestHelper.getSSN(20,0,0,5555),Consts.PARTTIME_MAX_INCOME +1 , 100, 100);</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">            assertTrue(loan == Consts.ZERO);</span>
+<span class="pc" id="L150">    	}catch(AssertionError err){</span>
+<span class="nc" id="L151">    		System.out.println(&quot;Test 10, correct : 0, got : &quot;+ loan);</span>
+    	}
+        
+<span class="fc" id="L154">    }</span>
+    // Part time max income and study rate 99 gets half loan + half subs
+    @Test
+    public void test11() 
+    {
+<span class="fc" id="L159">    	int loan = -1;</span>
+    	try{
+<span class="fc" id="L161">    		loan = p.getMonthlyAmount(TestHelper.getSSN(20,0,0,5555), Consts.PARTTIME_MAX_INCOME, 99, 100);</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">            assertTrue(loan == Consts.HALF_LOAN + Consts.HALF_SUBSIDY);</span>
+<span class="pc" id="L163">    	}catch(AssertionError err){</span>
+<span class="fc" id="L164">    		System.out.println(&quot;Test 11, correct : 4960, got : &quot;+ loan);</span>
+    	}
+        
+<span class="fc" id="L167">    }</span>
+    
+    
+    ////////////////////////////// STUDY RATE ////////////////////////////////////////
+    // Study rate = 100 gets loan + subs 
+    @Test
+    public void test12() 
+    {
+<span class="fc" id="L175">    	int loan = -1;</span>
+    	try{
+<span class="fc" id="L177">    		loan = p.getMonthlyAmount(TestHelper.getSSN(20,0,0,5555),0 , 100, 100);</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">            assertTrue(loan == Consts.FULL_LOAN + Consts.FULL_SUBSIDY);</span>
+<span class="pc" id="L179">    	}catch(AssertionError err){</span>
+<span class="fc" id="L180">    		System.out.println(&quot;Test 12, correct : 9904, got : &quot;+ loan);</span>
+    	}
+<span class="fc" id="L182">    }</span>
+    // Study rate &lt; 100 gets half loan + half subs
+    @Test
+    public void test13()
+    {
+<span class="fc" id="L187">    	int loan = -1;</span>
+    	try{
+<span class="fc" id="L189">    		loan = p.getMonthlyAmount(TestHelper.getSSN(20,0,0,5555), 0 , 99, 100);</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">            assertTrue(loan == Consts.HALF_LOAN + Consts.HALF_SUBSIDY);</span>
+    		
+<span class="pc" id="L192">    	}catch(AssertionError err){</span>
+<span class="fc" id="L193">    		System.out.println(&quot;Test 13, correct : 4960, got : &quot;+ loan);</span>
+    	}
+<span class="fc" id="L195">    }	</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

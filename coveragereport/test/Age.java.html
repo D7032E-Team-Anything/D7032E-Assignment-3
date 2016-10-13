@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Age.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">.</a> &gt; <a href="index.source.html" class="el_package">test</a> &gt; <span class="el_source">Age.java</span></div><h1>Age.java</h1><pre class="source lang-java linenums">package test;
+
+import static ltu.CalendarFactory.getCalendar;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+
+import ltu.Consts;
+import ltu.TestHelper;
+import ltu.PaymentImpl;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+<span class="nc" id="L15">public class Age {</span>
+	
+<span class="nc" id="L17">private static PaymentImpl p = null;    </span>
+    
+    @BeforeClass
+    public static void init() throws IOException {
+<span class="nc" id="L21">        p = new PaymentImpl(getCalendar(&quot;ltu.CalenderSpring&quot;)); </span>
+<span class="nc" id="L22">    }</span>
+    
+    // Age 19 gets nothing
+    @Test
+    public void test1() throws IOException 
+    {
+<span class="nc" id="L28">        int loan = p.getMonthlyAmount(TestHelper.getSSN(19,0,0,5555), 0, 100, 100);</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">        assertTrue(loan == Consts.ZERO);</span>
+<span class="nc" id="L30">    }</span>
+    // Age 20 gets loan + subs
+    @Test
+    public void test2() throws IOException 
+    {
+<span class="nc" id="L35">        int loan = p.getMonthlyAmount(TestHelper.getSSN(20,0,0,5555), 0 , 100, 100);</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        assertTrue(loan == Consts.FULL_LOAN + Consts.FULL_SUBSIDY);</span>
+<span class="nc" id="L37">    }</span>
+    // Age 46 gets loan + subs
+    @Test
+    public void test3() throws IOException 
+    {
+<span class="nc" id="L42">        int loan = p.getMonthlyAmount(TestHelper.getSSN(46,0,0,5555), 0 , 100, 100);</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        assertTrue(loan == Consts.FULL_LOAN + Consts.FULL_SUBSIDY);</span>
+<span class="nc" id="L44">    }</span>
+    // Age 47 gets subs only
+    @Test
+    public void test4() throws IOException 
+    {
+<span class="nc" id="L49">        int loan = p.getMonthlyAmount(TestHelper.getSSN(47,0,0,5555), 0 , 100, 100);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        assertTrue(loan == Consts.FULL_SUBSIDY);</span>
+<span class="nc" id="L51">    }</span>
+    
+    // Age 56 gets subs only
+    @Test
+    public void test5() throws IOException 
+    {
+<span class="nc" id="L57">        int loan = p.getMonthlyAmount(TestHelper.getSSN(56,0,0,5555), 0 , 100, 100);</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        assertTrue(loan == Consts.FULL_SUBSIDY);</span>
+<span class="nc" id="L59">    }</span>
+    // Age 57 gets nothing
+    @Test
+    public void test6() throws IOException 
+    {
+<span class="nc" id="L64">        int loan = p.getMonthlyAmount(TestHelper.getSSN(57,0,0,5555), 0 , 100, 100);</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        assertTrue(loan == Consts.ZERO);</span>
+<span class="nc" id="L66">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

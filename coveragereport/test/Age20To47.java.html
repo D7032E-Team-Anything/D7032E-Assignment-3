@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Age20To47.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">.</a> &gt; <a href="index.source.html" class="el_package">test</a> &gt; <span class="el_source">Age20To47.java</span></div><h1>Age20To47.java</h1><pre class="source lang-java linenums">package test;
+
+import static ltu.CalendarFactory.getCalendar;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
+import ltu.Consts;
+import ltu.TestHelper;
+import ltu.PaymentImpl;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
+
+@RunWith(Theories.class)
+<span class="nc" id="L22">public class Age20To47 {</span>
+	
+<span class="nc" id="L24">    private static PaymentImpl p = null;    </span>
+    
+    @BeforeClass
+    public static void init() throws IOException {
+<span class="nc" id="L28">        p = new PaymentImpl(getCalendar(&quot;ltu.CalenderSpring&quot;)); </span>
+<span class="nc" id="L29">    }</span>
+    
+    @DataPoints
+    public static String[] getAgeData(){
+    	
+<span class="nc" id="L34">    	List&lt;String&gt; mList = new LinkedList&lt;String&gt;();</span>
+    	String temp;
+<span class="nc bnc" id="L36" title="All 2 branches missed.">    	for(int i = 20 ; i &lt; 47 ; i++){</span>
+<span class="nc" id="L37">    		temp = TestHelper.getSSN(i, 0, 0, 1111);</span>
+<span class="nc" id="L38">    		mList.add(temp);</span>
+    	}
+<span class="nc" id="L40">    	String[] mArray = new String[mList.size()];</span>
+<span class="nc" id="L41">    	mArray = mList.toArray(mArray);</span>
+<span class="nc" id="L42">    	return mArray;</span>
+    }
+    
+    /**
+     * Full study rate and 0 income
+    **/
+    @Theory
+    public void test1(String age) throws IOException {
+<span class="nc" id="L50">        int loan = p.getMonthlyAmount( age , 0, 100, 100);</span>
+        //System.out.println(loan);
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        assertTrue(loan == Consts.FULL_LOAN + Consts.FULL_SUBSIDY);</span>
+<span class="nc" id="L53">    }</span>
+    
+    /**
+     * Full study rate and FULLTIME_MAX_INCOME
+    **/
+    @Theory
+    public void test2(String age) throws IOException {
+<span class="nc" id="L60">        int loan = p.getMonthlyAmount( age , Consts.FULLTIME_MAX_INCOME , 100, 100);</span>
+      //System.out.println(loan);
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        assertTrue(loan == Consts.FULL_LOAN+ Consts.FULL_SUBSIDY);</span>
+<span class="nc" id="L63">    }</span>
+    
+    /**
+     * Full study rate and 0 income
+    **/
+    @Theory
+    public void test3(String age) throws IOException {
+<span class="nc" id="L70">        int loan = p.getMonthlyAmount( age , 0, 100, 100);</span>
+      //System.out.println(loan);
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        assertTrue(loan == Consts.FULL_LOAN+ Consts.FULL_SUBSIDY);</span>
+<span class="nc" id="L73">    }</span>
+    
+    /**
+     * Full study rate and 0 income
+    **/
+    @Theory
+    public void test4(String age) throws IOException {
+<span class="nc" id="L80">        int loan = p.getMonthlyAmount( age , 0, 100, 100);</span>
+      //System.out.println(loan);
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        assertTrue(loan == Consts.FULL_LOAN+ Consts.FULL_SUBSIDY);</span>
+<span class="nc" id="L83">    }</span>
+    /**
+     * Full study rate age 47
+     * */
+    @Test
+    public void test5() throws IOException {
+<span class="nc" id="L89">        int loan = p.getMonthlyAmount( TestHelper.getSSN(47, 0, 0, 1111) , 0, 100, 100);</span>
+        //System.out.println(loan);
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        assertTrue(loan == Consts.FULL_SUBSIDY);</span>
+<span class="nc" id="L92">    }</span>
+    
+    /**
+     * Less than full time max part income
+     * */
+    @Test
+    public void test6() throws IOException 
+    {
+<span class="nc" id="L100">        int loan = p.getMonthlyAmount(TestHelper.getSSN(22,0,0,5555), Consts.PARTTIME_MAX_INCOME , 99, 100);</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        assertTrue(loan == Consts.HALF_LOAN + Consts.HALF_SUBSIDY);</span>
+<span class="nc" id="L102">    }</span>
+    
+    /**
+     * full time max part income
+     * */
+    @Test
+    public void test7() throws IOException 
+    {
+<span class="nc" id="L110">        int loan = p.getMonthlyAmount(TestHelper.getSSN(22,0,0,5555), Consts.PARTTIME_MAX_INCOME , 100, 100);</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        assertTrue(loan == Consts.HALF_LOAN + Consts.HALF_SUBSIDY);</span>
+<span class="nc" id="L112">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TestHelper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">.</a> &gt; <a href="index.source.html" class="el_package">ltu</a> &gt; <span class="el_source">TestHelper.java</span></div><h1>TestHelper.java</h1><pre class="source lang-java linenums">package ltu;
+
+import static ltu.CalendarFactory.getCalendar;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+<span class="nc" id="L9">public class TestHelper {</span>
+	
+    public static Calendar getSpringCal(){
+    	
+<span class="fc" id="L13">    	Calendar cal = Calendar.getInstance();</span>
+<span class="fc" id="L14">        cal.setTime(getCalendar(&quot;ltu.CalenderSpring&quot;).getDate());</span>
+<span class="fc" id="L15">        return cal;</span>
+    }
+    
+    public static String getSSN(int years, int months, int days, int extra4N){
+<span class="fc" id="L19">    	DateFormat format = new SimpleDateFormat(&quot;yyyyMMdd&quot;);</span>
+    	
+<span class="fc" id="L21">    	Calendar mCalender = getSpringCal();</span>
+    	
+<span class="fc" id="L23">    	mCalender.add(Calendar.YEAR, -years);</span>
+<span class="fc" id="L24">    	mCalender.add(Calendar.MONTH, -months);</span>
+<span class="fc" id="L25">    	mCalender.add(Calendar.DATE, -days);</span>
+    	
+<span class="fc" id="L27">    	String birthDate = format.format(mCalender.getTime());</span>
+    	
+<span class="fc" id="L29">    	return birthDate + &quot;-&quot; + String.valueOf(extra4N);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
