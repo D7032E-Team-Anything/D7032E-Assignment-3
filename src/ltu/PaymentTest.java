@@ -132,7 +132,7 @@ private static PaymentImpl p = null;
     {
     	int loan = -1;
     	try{
-    		loan = p.getMonthlyAmount(TestHelper.getSSN(20,0,0,5555), Consts.FULLTIME_MAX_INCOME , 100, 100);
+    		loan = p.getMonthlyAmount(TestHelper.getSSN(21,0,0,5555), Consts.FULLTIME_MAX_INCOME , 100, 100);
             assertTrue(loan == Consts.FULL_LOAN + Consts.FULL_SUBSIDY);
     	}catch(AssertionError err){
             System.out.println("Test 9, correct : 9904, got : "+ loan);
@@ -174,7 +174,7 @@ private static PaymentImpl p = null;
     {
     	int loan = -1;
     	try{
-    		loan = p.getMonthlyAmount(TestHelper.getSSN(20,0,0,5555),0 , 100, 100);
+    		loan = p.getMonthlyAmount(TestHelper.getSSN(22,0,0,5555),0 , 100, 100);
             assertTrue(loan == Consts.FULL_LOAN + Consts.FULL_SUBSIDY);
     	}catch(AssertionError err){
     		System.out.println("Test 12, correct : 9904, got : "+ loan);
@@ -186,11 +186,57 @@ private static PaymentImpl p = null;
     {
     	int loan = -1;
     	try{
-    		loan = p.getMonthlyAmount(TestHelper.getSSN(20,0,0,5555), 0 , 99, 100);
+    		loan = p.getMonthlyAmount(TestHelper.getSSN(21,0,0,5555), 0 , 99, 100);
             assertTrue(loan == Consts.HALF_LOAN + Consts.HALF_SUBSIDY);
     		
     	}catch(AssertionError err){
     		System.out.println("Test 13, correct : 4960, got : "+ loan);
     	}
-    }	
+    }
+    // Test payment date on Saturday
+    @Test
+    public void test14()
+    {
+    	PaymentImpl p1 = null;
+    	String day = "";		
+    	
+    	try{
+    		p1 = new PaymentImpl(getCalendar("ltu.CalenderSaturday"));
+    		day = p1.getNextPaymentDay();
+    		assertEquals(day, "20160429");
+    	}catch(AssertionError err){
+    		System.out.println("Test 14, correct : 20160429, got : " + day);
+    	} catch (IOException e) {
+			System.out.println("Clouldn't load the calender");
+		}
+    }
+    
+    // Test payment date on Sunday
+    @Test
+    public void test15()
+    {
+    	String day = "";
+    	try{
+    		day = p.getNextPaymentDay();
+    		assertEquals(day, "20160129");
+    	}catch(AssertionError err){
+    		System.out.println("Test 14, correct : 20160129, got : " + day);
+    	}
+    }
+    
+    /*
+    // Test the SNN
+    @Test
+    public void test16()
+    {
+    	int loan = -1;
+    	try{
+    		loan = p.getMonthlyAmount("123456", 0 , 99, 100);
+            assertTrue(loan == Consts.HALF_LOAN + Consts.HALF_SUBSIDY);
+            System.out.println("Test 14, accepted 6 number SNN");
+    	}catch(AssertionError err){
+    		
+    	}
+    }
+    */
 }
